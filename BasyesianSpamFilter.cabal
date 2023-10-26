@@ -21,6 +21,23 @@ maintainer:         briantiptondev@gmail.com
 -- category:
 extra-source-files: CHANGELOG.md
 
+library
+    exposed-modules:  Util,
+                      Dataset.Probability,
+                      Dataset.Util,
+                      Dataset.Types,
+                      Probability.Types
+
+    -- Modules included in this library but not exported.
+    -- other-modules:
+
+    -- LANGUAGE extensions used by modules in this package.
+    -- other-extensions:
+    build-depends:    base ^>=4.14.3.0
+    hs-source-dirs:   src
+    default-language: Haskell2010
+
+
 executable BasyesianSpamFilter
     main-is:          Main.hs
 
@@ -30,7 +47,9 @@ executable BasyesianSpamFilter
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
     build-depends:
-        base ^>=4.14.3.0
+        base ^>=4.14.3.0,
+        containers,
+        BasyesianSpamFilter
 
     hs-source-dirs:   app
     default-language: Haskell2010
