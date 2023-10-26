@@ -1,5 +1,8 @@
 module SpamFilter.Dataset.Util where
 
+import Control.Arrow (Arrow (first))
+import Data.Foldable (foldl')
+import qualified Data.Map.Strict as Map
 import SpamFilter.Dataset.Types (Dataset (Dataset), Message (Ham, Spam), Words)
 import Util.String (split)
 
@@ -21,7 +24,13 @@ messageWords :: Message -> [String]
 messageWords (Spam words) = words
 messageWords (Ham words) = words
 
-filterMessagesOf :: (Words -> Message) -> [Message] -> [Message]
+countWords :: Foldable t => t Message -> Int
+countWords = foldl' (\acc msg -> acc + length (messageWords msg)) 0
+
+filterMessagesOf ::
+  (Words -> Message) ->
+  [Message] ->
+  [Message]
 filterMessagesOf t msgs =
   case t [] of
     Spam _ -> filter (not . isSpam) msgs
@@ -29,3 +38,9 @@ filterMessagesOf t msgs =
  where
   isSpam (Spam _) = True
   isSpam _ = False
+
+joinMaps ::
+  Map.Map String Int ->
+  Map.Map String Int ->
+  Map.Map String Int
+joinMaps = Map.unionWith (+)

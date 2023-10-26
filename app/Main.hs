@@ -3,42 +3,40 @@ module Main where
 import Data.Foldable (foldl')
 import qualified Data.Map.Strict as Map
 import SpamFilter.Dataset.Types (Dataset (Dataset), Message (Ham, Spam))
-import SpamFilter.Dataset.Util (filterMessagesOf, messageWords, toDataset)
+import SpamFilter.Dataset.Util (countWords, filterMessagesOf, joinMaps, messageWords, toDataset)
 import System.Environment (getArgs)
+import Util.Cli (addDefaultPath, checkOps, strToOps)
 import Util.String (split)
 
-filePath :: IO [Char]
-filePath =
-  getArgs
-    >>= ( \x ->
-            if null x
-              then return "SMSSpamCollection.txt"
-              else return (head x)
-        )
-
-dataset :: IO Dataset
-dataset = toDataset <$> (filePath >>= rawMessages)
+dataset :: String -> IO Dataset
+dataset path = toDataset <$> rawMessages path
  where
   rawMessages :: String -> IO [String]
   rawMessages path = lines <$> readFile path
 
-buildMap :: Map.Map String Int -> [Message] -> Map.Map String Int
-buildMap acc messages = foldl' addWord acc (concatMap messageWords messages)
+buildMap :: [Message] -> Map.Map String Int
+buildMap messages = foldl' addWord Map.empty (concatMap messageWords messages)
  where
   addWord :: Map.Map String Int -> String -> Map.Map String Int
   addWord map word = Map.insertWith (+) word 1 map
 
 main :: IO ()
 main = do
-  (Dataset messages) <- dataset
+  ops <-
+    getArgs
+      >>= mapM strToOps
+      >>= checkOps
+  let path = addDefaultPath ops
+  (Dataset messages) <- dataset path
   let spam = filterMessagesOf Ham messages
       ham = filterMessagesOf Spam messages
 
-      nSpamWords = foldl' (\acc msg -> acc + length (messageWords msg)) 0 spam
-      nHamWords = foldl' (\acc msg -> acc + length (messageWords msg)) 0 ham
+      nSpamWords = countWords spam
+      nHamWords = countWords ham
       nTotalWords = nHamWords + nSpamWords
 
-      spamTotals = buildMap Map.empty spam
-      hamTotals = buildMap Map.empty ham
+      spamTotals = buildMap spam
+      hamTotals = buildMap ham
+      allTotals = joinMaps spamTotals hamTotals
 
-  print ""
+  print allTotals

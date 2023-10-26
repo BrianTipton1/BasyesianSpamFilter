@@ -7,3 +7,5 @@ split delimiter (x : xs)
   | otherwise = (x : head rest) : tail rest
  where
   rest = split delimiter xs
+
+
