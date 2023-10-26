@@ -1,7 +1,7 @@
-module Dataset.Util where
+module SpamFilter.Dataset.Util where
 
-import Dataset.Types (Dataset (Dataset), Message (Ham, Spam), Words)
-import Util (split)
+import SpamFilter.Dataset.Types (Dataset (Dataset), Message (Ham, Spam), Words)
+import Util.String (split)
 
 toDataset :: [String] -> Dataset
 toDataset =

@@ -1,4 +1,4 @@
-module Util where
+module Util.String where
 
 split :: Char -> String -> [String]
 split _ "" = [""]

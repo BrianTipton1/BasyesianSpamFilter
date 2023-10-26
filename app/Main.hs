@@ -2,11 +2,10 @@ module Main where
 
 import Data.Foldable (foldl')
 import qualified Data.Map.Strict as Map
-import GHC.Base (build)
+import SpamFilter.Dataset.Types (Dataset (Dataset), Message (Ham, Spam))
+import SpamFilter.Dataset.Util (filterMessagesOf, messageWords, toDataset)
 import System.Environment (getArgs)
-import Util (split)
-import Dataset.Types (Dataset (Dataset), Message (Ham, Spam))
-import Dataset.Util (toDataset, messageWords, filterMessagesOf)
+import Util.String (split)
 
 filePath :: IO [Char]
 filePath =
@@ -43,4 +42,3 @@ main = do
       hamTotals = buildMap Map.empty ham
 
   print ""
-

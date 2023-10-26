@@ -1,6 +1,6 @@
 {-# LANGUAGE GADTs #-}
 
-module Dataset.Types where
+module SpamFilter.Dataset.Types where
 
 type Words = [String]
 

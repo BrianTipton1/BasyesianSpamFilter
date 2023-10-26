@@ -1,6 +1,6 @@
 {-# LANGUAGE GADTs #-}
 
-module Probability.Types where
+module SpamFilter.Probability.Types where
 
 data WordProbability where
     WordProbability ::

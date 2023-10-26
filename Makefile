@@ -3,13 +3,16 @@ SRC_DIR = src
 APP_DIR = app
 TARGET = BasyesianSpamFilter
 
-all: $(TARGET)
-	rm -f $(SRC_DIR)/*.o $(SRC_DIR)/*.hi $(APP_DIR)/*.o $(APP_DIR)/*.hi
+all: build cleanup
 
-$(TARGET):
+build:
 	$(HC) --make -dynamic -i$(SRC_DIR) $(APP_DIR)/Main.hs -o $(TARGET)
 
-clean:
-	rm -f $(SRC_DIR)/*.o $(SRC_DIR)/*.hi $(APP_DIR)/*.o $(APP_DIR)/*.hi $(TARGET)
+cleanup:
+	find $(SRC_DIR) $(APP_DIR) -type f \( -name "*.o" -o -name "*.hi" \) -delete
 
-.PHONY: all clean
+clean:
+	find $(SRC_DIR) $(APP_DIR) -type f \( -name "*.o" -o -name "*.hi" \) -delete
+	rm -f $(TARGET)
+
+.PHONY: all build cleanup clean

@@ -22,11 +22,12 @@ maintainer:         briantiptondev@gmail.com
 extra-source-files: CHANGELOG.md
 
 library
-    exposed-modules:  Util,
-                      Dataset.Probability,
-                      Dataset.Util,
-                      Dataset.Types,
-                      Probability.Types
+    exposed-modules:  Util.String,
+                      Data.CSV.Types,
+                      SpamFilter.Dataset.Util,
+                      SpamFilter.Dataset.Types,
+                      SpamFilter.Probability.Types,
+                      SpamFilter.Probability.Basyesian
 
     -- Modules included in this library but not exported.
     -- other-modules:
