@@ -33,7 +33,7 @@ addDefaultPath :: [CommandLineOption] ->  String
 addDefaultPath ops =
     case opsToPath ops of
         Just (CmdPath path) ->  path
-        otherwise -> "SMSSpamCollection.txt"
+        _ -> "SMSSpamCollection.txt"
 
 strToOps :: String -> IO CommandLineOption
 strToOps s

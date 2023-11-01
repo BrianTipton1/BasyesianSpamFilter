@@ -43,3 +43,4 @@ Examples:
 
 ## ChatGPT
 - [Generating Help Text](https://chat.openai.com/share/d9d6ec82-0536-40c5-89f8-783489a633c8)
+- [Generating PdfLatex Makefile](https://chat.openai.com/share/66125fe8-973c-4061-9f20-14fbc3050a60)
