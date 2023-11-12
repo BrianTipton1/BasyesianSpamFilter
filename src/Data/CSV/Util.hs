@@ -4,7 +4,7 @@ import Data.CSV.Types (CSV (CSV), Column (Column), Header (Header), Row (Row))
 import qualified Data.Map.Strict as Map
 
 buildRow :: Header -> [String] -> Row
-buildRow (Header columns) values = Row items
+buildRow header@(Header columns) values = Row (header, items)
   where
     zipped = zip columns values
     items = Map.fromList zipped

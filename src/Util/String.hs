@@ -8,4 +8,6 @@ split delimiter (x : xs)
  where
   rest = split delimiter xs
 
+removeChar :: Eq a => a -> [a] -> [a]
+removeChar c = filter (/= c)
 

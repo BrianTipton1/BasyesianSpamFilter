@@ -3,7 +3,7 @@ module SpamFilter.Dataset.Util where
 import Data.Foldable (foldl')
 import qualified Data.Map.Strict as Map
 import SpamFilter.Dataset.Types (Dataset (Dataset), Message (Ham, Spam), Words)
-import Util.String (split)
+import Util.String (removeChar, split)
 
 toDataset :: [String] -> Dataset
 toDataset =
@@ -48,4 +48,16 @@ buildMap :: [Message] -> Map.Map String Int
 buildMap messages = foldl' addWord Map.empty (concatMap messageWords messages)
  where
   addWord :: Map.Map String Int -> String -> Map.Map String Int
-  addWord map word = Map.insertWith (+) word 1 map
+  addWord map word =
+    Map.insertWith
+      (+)
+      ( ( removeChar '“'
+            . removeChar '\''
+            . removeChar '"'
+            . removeChar '('
+            . removeChar ')'
+        )
+          word
+      )
+      1
+      map

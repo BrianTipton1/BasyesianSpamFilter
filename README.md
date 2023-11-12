@@ -5,6 +5,16 @@
 make
 ```
 
+## Running with prebuild CSV and Generating Report
+```bash
+./BasyesianSpamFilter --report
+```
+
+## Running and rebuilding Probability CSV and Generating Report
+```bash
+./BasyesianSpamFilter --report
+```
+
 ## Help Text
 ```bash
 Usage: BayesianSpamFilter [OPTIONS] [PATH]
@@ -12,7 +22,7 @@ Usage: BayesianSpamFilter [OPTIONS] [PATH]
 Options:
   -r, --report           Generate a report on the data processed (requires pdflatex).
   -h, --help             Show this help message and exit.
-  -c, --csv              Rebuild Probability CSVs 
+  -c, --csv              Rebuild Probability CSV 
 
 Arguments:
   PATH                   The path to the dataset file containing the text message data to be processed.

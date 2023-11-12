@@ -13,13 +13,10 @@ newtype Column where
 newtype Header where
     Header :: {getColumns :: [Column]} -> Header
 
-newtype Row where
-    Row :: Map.Map Column String -> Row
+newtype Row = Row (Header, Map.Map Column String)
 
 newtype CSV = CSV (Header, [Row])
 
-escapeAndQuote :: String -> String
-escapeAndQuote str = "\"" ++ concatMap (\c -> if c == '\"' then "\"\"" else [c]) str ++ "\""
 
 instance Show Column where
     show :: Column -> String
@@ -31,9 +28,18 @@ instance Show Header where
 
 instance Show Row where
     show :: Row -> String
-    show (Row m) = intercalate "," (map (\(_, val) -> escapeAndQuote val) (Map.toList m))
+    show (Row (Header cols, m)) = 
+        intercalate "," . map (\col -> escapeAndQuote (Map.findWithDefault "" col m)) $ cols
+
 
 instance Show CSV where
     show :: CSV -> String
-    show (CSV (header, rows)) =
-        show header ++ "\n" ++ intercalate "\n" (map show rows)
+    show (CSV (header, rows)) = 
+        show header ++ "\n" ++ intercalate "\n" (map (showWithHeader header) rows)
+
+showWithHeader :: Header -> Row -> String
+showWithHeader header (Row (_, m)) = 
+    intercalate "," . map (\col -> escapeAndQuote (Map.findWithDefault "" col m)) $ getColumns header
+
+escapeAndQuote :: String -> String
+escapeAndQuote str = "\"" ++ concatMap (\c -> if c == '\"' then "\"\"" else [c]) str ++ "\""

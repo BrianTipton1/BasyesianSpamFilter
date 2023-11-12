@@ -25,34 +25,34 @@ data WordProbability where
 header :: Header
 header =
     Header
-        [ Column "HamOccurences"
-        , Column "NTotal"
-        , Column "ProbOverall"
-        , Column "SpamOccurences"
-        , Column "Word"
+        [ Column "Word"
         , Column "WordGivenHam"
         , Column "WordGivenSpam"
+        , Column "ProbOverall"
+        , Column "HamOccurences"
+        , Column "SpamOccurences"
+        , Column "NTotal"
         ]
 
 instance ToRow WordProbability where
     toRow :: WordProbability -> Row
-    toRow wordProb = Row dataMap
+    toRow wordProb = Row (header, dataMap)
       where
         columns = getColumns header
         values =
-            [ show (hamOccurences wordProb)
-            , show (nTotal wordProb)
-            , show (probOverall wordProb)
-            , show (spamOccurences wordProb)
-            , word wordProb
+            [ word wordProb
             , show (wordGivenHam wordProb)
             , show (wordGivenSpam wordProb)
+            , show (probOverall wordProb)
+            , show (hamOccurences wordProb)
+            , show (spamOccurences wordProb)
+            , show (nTotal wordProb)
             ]
         dataMap = Map.fromList $ zip columns values
 
 instance FromRow WordProbability where
     fromRow :: Row -> Maybe WordProbability
-    fromRow (Row rowMap) =
+    fromRow (Row (_, rowMap)) =
         WordProbability
             <$> (Map.lookup (Column "Word") rowMap >>= readMaybe)
             <*> (Map.lookup (Column "WordGivenHam") rowMap >>= readMaybe)
