@@ -2,7 +2,7 @@
 
 module SpamFilter.Dataset.Types where
 
-import Data.CSV.Types (CSV (CSV), Column (Column), Row (Row))
+import Data.CSV.Types (CSV (CSV), Column (Column), Header (Header), Row (Row))
 import qualified Data.Map.Strict as Map
 import Text.Read (readMaybe)
 
@@ -14,7 +14,7 @@ data Message where
     deriving (Show)
 
 newtype Dataset where
-    Dataset :: {theMessagesOf :: [Message]} -> Dataset
+    Dataset :: { theMessagesOf :: [Message] } -> Dataset
     deriving (Show)
 
 class ToRow a where
@@ -24,7 +24,7 @@ class FromRow a where
     fromRow :: Row -> Maybe a
 
 fromCSV :: FromRow a => CSV -> Maybe [a]
-fromCSV (CSV rows) = mapM fromRow rows
+fromCSV (CSV (_, rows)) = mapM fromRow rows
 
-toCSV :: ToRow a => [a] -> CSV
-toCSV = CSV . map toRow
+toCSV :: ToRow a => Header -> [a] -> CSV
+toCSV header messages = CSV (header, map toRow messages)

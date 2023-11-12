@@ -12,6 +12,7 @@ Usage: BayesianSpamFilter [OPTIONS] [PATH]
 Options:
   -r, --report           Generate a report on the data processed (requires pdflatex).
   -h, --help             Show this help message and exit.
+  -c, --csv              Rebuild Probability CSVs 
 
 Arguments:
   PATH                   The path to the dataset file containing the text message data to be processed.
@@ -44,3 +45,4 @@ Examples:
 ## ChatGPT
 - [Generating Help Text](https://chat.openai.com/share/d9d6ec82-0536-40c5-89f8-783489a633c8)
 - [Generating PdfLatex Makefile](https://chat.openai.com/share/66125fe8-973c-4061-9f20-14fbc3050a60)
+- [Generating Report Latex](https://chat.openai.com/share/3af8bfb0-78fe-4fee-9f93-812f8e9d7ff5)

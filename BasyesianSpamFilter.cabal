@@ -21,7 +21,7 @@ maintainer:         briantiptondev@gmail.com
 -- category:
 extra-source-files: CHANGELOG.md
 
-library
+library LibBasyesianSpamFilter
     exposed-modules:  Util.String,
                       Util.Cli,
                       Data.CSV.Types,
@@ -30,7 +30,8 @@ library
                       SpamFilter.Dataset.Util,
                       SpamFilter.Dataset.Types,
                       SpamFilter.Probability.Types,
-                      SpamFilter.Probability.Basyesian
+                      SpamFilter.Probability.Basyesian,
+                      SpamFilter.Probability.Util
 
     -- Modules included in this library but not exported.
     -- other-modules:
@@ -55,7 +56,7 @@ executable BasyesianSpamFilter
     build-depends:
         base ^>=4.14.3.0,
         containers,
-        BasyesianSpamFilter
+        LibBasyesianSpamFilter
 
     hs-source-dirs:   app
     default-language: Haskell2010

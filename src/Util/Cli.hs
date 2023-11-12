@@ -1,18 +1,22 @@
 module Util.Cli where
 
-import Data.List (isSubsequenceOf, find)
+import Data.List (find, isSubsequenceOf)
 import GHC.IO.Exception (ExitCode (ExitFailure))
 import System.Directory (doesFileExist)
+import System.Directory.Internal.Prelude (getArgs)
 import System.Exit (exitWith)
 
 data CommandLineOption
     = CmdPath String
     | CmdHelp
     | CmdReport
+    | CmdCSV
     deriving (Eq, Show)
 
 cmdHelpList :: [String]
 cmdHelpList = ["-h", "--help"]
+cmdCSV :: [String]
+cmdCSV = ["-c", "--csv"]
 cmdReport :: [String]
 cmdReport = ["-r", "--report"]
 
@@ -29,16 +33,17 @@ checkOps ops
     isCmdPath _ = False
     containsHelp = elem CmdHelp
 
-addDefaultPath :: [CommandLineOption] ->  String
+addDefaultPath :: [CommandLineOption] -> String
 addDefaultPath ops =
     case opsToPath ops of
-        Just (CmdPath path) ->  path
+        Just (CmdPath path) -> path
         _ -> "SMSSpamCollection.txt"
 
 strToOps :: String -> IO CommandLineOption
 strToOps s
     | s `elem` cmdHelpList = return CmdHelp
     | s `elem` cmdReport = return CmdReport
+    | s `elem` cmdCSV = return CmdCSV
     | otherwise = do
         fe <- doesFileExist s
         if fe
@@ -53,6 +58,7 @@ help =
         , "Options:"
         , "  -r, --report           Generate a report on the data processed (requires pdflatex)."
         , "  -h, --help             Show this help message and exit."
+        , "  -c, --csv              Rebuild Probability CSVs."
         , ""
         , "Arguments:"
         , "  PATH                   The path to the dataset file containing the text message data to be processed."
@@ -86,4 +92,10 @@ opsToPath :: [CommandLineOption] -> Maybe CommandLineOption
 opsToPath = find isCmdPath
   where
     isCmdPath (CmdPath _) = True
-    isCmdPath _           = False
+    isCmdPath _ = False
+
+getOps :: IO [CommandLineOption]
+getOps =
+    getArgs
+        >>= mapM strToOps
+        >>= checkOps

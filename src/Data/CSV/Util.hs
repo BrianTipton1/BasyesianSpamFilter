@@ -15,7 +15,7 @@ buildHeader strs = Header $ map Column strs
 buildCSV :: Header -> [[String]] -> Maybe CSV
 buildCSV header@(Header columns) rowsData =
     if all (\row -> length row == numOfColumns) rowsData
-        then Just $ CSV $ map (buildRow header) rowsData
+        then Just $ CSV (header, map (buildRow header) rowsData)
         else Nothing
   where
     numOfColumns = length columns
